@@ -1,0 +1,30 @@
+Command line validations
+
+From command line run the following commands and validate output
+
+./mini_grep.py -h
+make sure the help is printed
+
+/.mini_grep.py -e
+validate the usage is printed as well as an error indicating and argument is required after -error
+
+/.mini_grep.py -e test
+validate this allows you to enter a line which will match the pattern provided
+
+./mini_grep.py -e test test_file.txt
+validate this prints: 3 this is a test
+
+./mini_grep.py -e test test_file.txt test_file_2.txt
+validate this prints:
+3 this is a test
+1 the word does not get match on test on first line
+3 tests on first line
+4 how about them tests
+6 kinda cool for a test
+8 testing is good
+11 why doesn't the word tests work?
+13 tests
+14 the word at the end tests
+
+./mini_grep.py -e [ test_file.txt test_file_2.txt
+validate this prints: Please make sure the pattern is valid regex.
