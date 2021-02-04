@@ -1,42 +1,38 @@
 #!/usr/bin/python3
 import unittest
-from mini_grep import grep_file
-from mini_grep import grep_files
+import subprocess
 
 
 class MiniGrepTests(unittest.TestCase):
 
     def test_grep_file_one_line(self):
-        self.assertEqual(
-            grep_file('test', 'test_file.txt', True),
-            ['3 this is a test']
-        )
+        output = subprocess.getoutput(
+            './mini_grep.py -e test test_file.txt')
+        self.assertIn('3 this is a test', output)
 
     def test_grep_file_multiple_lines(self):
-        self.assertEqual(
-            grep_file('test', 'test_2_lines.txt', True),
-            ['1 how about them tests', '4 testing is good']
-        )
+        output = subprocess.getoutput(
+            './mini_grep.py -e test test_2_lines.txt')
+        self.assertIn('1 how about them tests', output)
+        self.assertIn('4 testing is good', output)
 
     def test_grep_file_no_line_number(self):
-        self.assertEqual(
-            grep_file('test', 'test_2_lines.txt', print_lineno=False),
-            ['how about them tests', 'testing is good']
-        )
+        output = subprocess.getoutput(
+            './mini_grep.py -e test test_2_lines.txt -q')
+        self.assertIn('how about them tests', output)
+        self.assertIn('testing is good', output)
 
     def test_grep_file_no_match(self):
-        self.assertEqual(
-            grep_file('nada', 'test_2_lines.txt', print_lineno=False),
-            []
-        )
+        output = subprocess.getoutput(
+            './mini_grep.py -e nada test_2_lines.txt -q')
+        self.assertNotIn('nada', output)
 
     def test_grep_files_two_files(self):
-        self.assertEqual(
-            grep_files('test', ['test_2_lines.txt', 'test_file.txt'],
-                       print_lineno=True),
-            [['1 how about them tests', '4 testing is good'],
-             ['3 this is a test']]
-        )
+        output = subprocess.getoutput(
+            './mini_grep.py -e test test_2_lines.txt test_file.txt')
+        self.assertIn('1 how about them tests', output)
+        self.assertIn('4 testing is good', output)
+        self.assertIn('3 this is a test', output)
 
 
 if __name__ == '__main__':
