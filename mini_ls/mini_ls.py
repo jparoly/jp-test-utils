@@ -9,19 +9,16 @@ from datetime import datetime
 def setup_parser():
     """Configure command line argument parser object."""
 
-    parser = ArgumentParser(description='lists information about the paths '
-                            'given in FILE.', add_help=False)
+    parser = ArgumentParser(description='lists file name, permissions '
+                            'and modified date for files and dirs',
+                            add_help=False)
     parser.add_argument('-h', '--help', action='help', help='show this help '
                         'message and exit')
     parser.add_argument('-r', '--recursive', action='store_true',
-                        help='run on sub dirs')
+                        help='include sub dirs recursively')
     parser.add_argument('files', metavar='FILE', nargs='*', default=None,
                         help='the path in which to list files')
     return parser
-
-
-def get_file_owner(file):
-    return getpwuid(stat(file).st_uid).pw_name
 
 
 def get_file_stats(file):
@@ -29,9 +26,6 @@ def get_file_stats(file):
     owner = getpwuid(st.st_uid).pw_name
     permissions = st.st_mode
     mod_time = datetime.fromtimestamp(st.st_mtime)
-
-
-    # I know we can make these more user friendly but for now leaving as is
     return (owner, permissions, mod_time)
 
 
@@ -77,6 +71,8 @@ def main():
         list_files(args.files, is_recursive=True)
     else:
         list_files(args.files)
+
+    # TODO: Add error handling
 
     # started to implement this way then determined this is not really
     # implementing ls in python just executing the command from within
