@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 from os import stat
 from pwd import getpwuid
 from datetime import datetime
+import sys
 
 
 def setup_parser():
@@ -49,6 +50,10 @@ def list_files(paths, is_recursive=False):
 
     else:  # use provided paths, one or more
         for path in paths:
+            if not os.path.exists(path):
+                sys.exit(f'The provided path {path} is not valid. '
+                         'Please provide a valid path or for the current '
+                         'directory do not enter a path.')
             print(f'path: {path}')
             if is_recursive:
                 list_recursive(path)
@@ -72,8 +77,6 @@ def main():
     else:
         list_files(args.files)
 
-    # TODO: Add error handling
-
     # started to implement this way then determined this is not really
     # implementing ls in python just executing the command from within
     # Left it here for discussion purposes
@@ -88,7 +91,6 @@ def main():
     # output = proc.stdout.read()
     # output = output.decode('utf-8')
     # print(output)
-    # return output
 
 
 if __name__ == '__main__':

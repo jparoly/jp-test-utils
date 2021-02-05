@@ -68,6 +68,11 @@ class MiniDfTests(unittest.TestCase):
     # TODO: Add test to make sure there are two occurences of certain strings
     # when providing two paths
 
+    def test_bad_path(self):
+        output = subprocess.getoutput(
+            './mini_df.py bad_path')
+        self.assertIn('Please provide a valid path', output)
+
 
 if __name__ == '__main__':
     unittest.main()

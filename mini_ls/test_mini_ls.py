@@ -68,6 +68,19 @@ class MiniLsTests(unittest.TestCase):
         self.assertIn('test2_2.txt', output)
         self.assertIn('test2_1_1.txt', output)
 
+    def test_bad_path(self):
+        output = subprocess.getoutput(
+            './mini_ls.py test_paths_')
+        self.assertIn('Please provide a valid path', output)
+
+    def test_first_good_second_bad_path(self):
+        output = subprocess.getoutput(
+            './mini_ls.py test_paths_1 bad_path')
+        self.assertIn('test_paths_1', output)
+        self.assertIn('test1_2.txt', output)
+        self.assertIn('test1_1.txt', output)
+        self.assertIn('Please provide a valid path', output)
+
 
 if __name__ == '__main__':
     unittest.main()

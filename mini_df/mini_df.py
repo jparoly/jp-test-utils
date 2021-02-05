@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 from argparse import ArgumentParser
 import shutil
+import os
+import sys
 
 
 def setup_parser():
@@ -9,8 +11,6 @@ def setup_parser():
     parser = ArgumentParser(description='outputs disk total, free '
                             'and used space for each entry in PATH',
                             add_help=False)
-    # parser.add_argument('-h', '--help', action='help', help='show this help '
-    #                     'message and exit')
     parser.add_argument('paths', metavar='PATH', nargs='*', default=None,
                         help='the path in which to list disk stats')
     parser.add_argument('-h', '--prettier', action='store_true',
@@ -34,6 +34,10 @@ def get_disk_stats(paths, prettier):
             print(f'current path {stats}')
     else:
         for path in paths:
+            if not os.path.exists(path):
+                sys.exit(f'The provided path {path} is not valid. '
+                         'Please provide a valid path or for the current '
+                         'directory do not enter a path.')
             stats = shutil.disk_usage(path)
             if prettier:
                 print(f'\n*** Disk Usage for "{path}" ***\n')
@@ -48,8 +52,6 @@ def main():
     paths = args.paths
     prettier = args.prettier
     get_disk_stats(paths, prettier)
-
-    # TODO: Add error handling
 
 
 if __name__ == '__main__':

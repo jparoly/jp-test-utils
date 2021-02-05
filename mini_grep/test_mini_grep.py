@@ -34,6 +34,11 @@ class MiniGrepTests(unittest.TestCase):
         self.assertIn('4 testing is good', output)
         self.assertIn('3 this is a test', output)
 
+    def test_invalid_pattern(self):
+        output = subprocess.getoutput(
+            './mini_grep.py -e [')
+        self.assertIn('Please make sure the pattern is valid regex.', output)
+
 
 if __name__ == '__main__':
     unittest.main()
