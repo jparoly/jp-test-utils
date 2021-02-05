@@ -12,28 +12,23 @@ def grep_file(pattern: str, file, print_lineno: bool):
     line = text.readline()
     lineno = 1
 
-    lines = []
     while line:
         if re.search(pattern, line):
             if not print_lineno:
                 print(line.rstrip())
-                lines.append(line.rstrip())
             else:
                 print(f'{lineno} {line}'.rstrip())
-                lines.append(f'{lineno} {line}'.rstrip())
         line = text.readline()
         lineno += 1
     text.close()
-    return lines
 
 
 def grep_files(pattern: str, files, print_lineno: bool):
     """Search files and directories."""
-    lines = []
+
     for file in files:
         if os.path.isfile(file) or file == '(standard input)':
-            lines.append(grep_file(pattern, file, print_lineno))
-    return lines
+            grep_file(pattern, file, print_lineno)
 
 
 def setup_parser():
